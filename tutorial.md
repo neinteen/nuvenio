@@ -3,14 +3,14 @@
 Entity Component System (often shortened to 'ECS') is a programming design pattern in which the structure of the application is broken up into **Entities**, **Components**, and **Systems**.
 - **Entities** are the "things" in the application, such as a player, UI widget, scene, etc.
   Entities are identified with simple index-based [`EntityId`] handles.
-- **Components** represent the capabilities that an entity possesses. Entities are described as a set of components. For instance, an asteroid entity flying through space might have a `Position` and `Velocity` component to describe its flight path over time. In `evenio`, components are Rust data types.
+- **Components** represent the capabilities that an entity possesses. Entities are described as a set of components. For instance, an asteroid entity flying through space might have a `Position` and `Velocity` component to describe its flight path over time. In `nuvenio`, components are Rust data types.
 - **Systems** are procedures which act on all entities with certain combinations of components. A physics system might need an entity's `Position`, `Velocity`, and `Mass` components in order to calculate the object's next position. This typically means you have a list of systems that run in sequence (or parallel) every frame or time step of your application.
 
 ECS helps solve a number of problems that often arise in traditional object-oriented software designs. Different "types" of entities are able to share components, subsuming the functionality of inheritance. Additionally, ECS can be very efficient due to the way that components are organized in memory.
 
 ECS is especially useful in Rust because it can, in some sense, ergonomically sidestep Rust's aliasing rules. Concurrent entity component access is made possible so long as it conforms to Rust's aliasing XOR mutability demands.
 
-# Why `evenio`?
+# Why `nuvenio`?
 
 Interactive applications are largely event driven. When the player attacks a monster, reduce its health. When an egg hits the ground, break it open. When the "play" button is clicked, start the game. Reifying events in code is a useful design tool because it gives downstream code something to hook into and subsequently change the behavior of the program. In other words, extensibility.
 
@@ -21,14 +21,14 @@ However, many prior Rust ECS libraries have trouble expressing the control flow 
 
 The conclusion, then, is that traditional batch-oriented run-once-per-frame systems alone are insufficient for expressing many kinds of application logic. This may not come as a surprise in hindsight, but due to Rust's constraints, it's tempting to apply this design pattern everywhere. When all you have is a hammer, everything looks like a nail.
 
-Evenio solves these problems by introducing "push" style events as a first-class citizen. As you'll see later, all systems are generalized as event handlers and run immediately in response to events. The goal is to make it easy to write _correct_ code by making the rules around event propagation easy to understand. Events need to be fast, too!
+nuvenio solves these problems by introducing "push" style events as a first-class citizen. As you'll see later, all systems are generalized as event handlers and run immediately in response to events. The goal is to make it easy to write _correct_ code by making the rules around event propagation easy to understand. Events need to be fast, too!
 
 # The World
 
 To begin using the library, we'll need a [`World`].
 
 ```rust
-use evenio::prelude::*; // Import the most commonly used items.
+use nuvenio::prelude::*; // Import the most commonly used items.
 
 let mut world = World::new(); // Create an empty world.
 ```
@@ -46,7 +46,7 @@ Also note that `World`s are not [`Send`] or [`Sync`] because they are allowed to
 To get started, let's create a "hello world" handler that runs in response to our custom `Message` event.
 
 ```rust
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 #[derive(GlobalEvent)]
 struct Message<'a>(&'a str);
@@ -75,7 +75,7 @@ The message is: "Hello, World!"
 Note that handlers must listen for exactly one event type. Attempting to listen for more than one event or no events at all will panic.
 
 ```should_panic
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 // Panics. (lambdas are also handlers)
 world.add_handler(|| {});
@@ -89,7 +89,7 @@ Handler order is first determined by the handler's [`HandlerPriority`]. This is 
 If handlers have the same priority, then we fall back on the order the handlers were added to the `World` to decide the order.
 
 ```rust
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 let mut world = World::new();
 
@@ -133,7 +133,7 @@ But sometimes it's desirable to mutate events so that later handlers will see th
 We can achieve this by using the [`ReceiverMut`] handler parameter. `ReceiverMut` provides a mutable reference to the event.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 #
 # let mut world = World::new();
 #
@@ -165,7 +165,7 @@ As a general rule of thumb, use `Receiver` when you can, and `ReceiverMut` when 
 We can take this a step further and entirely _take ownership_ of the event. Doing so will stop the event from broadcasting and later handlers will not receive the event. This is done with [`EventMut::take`].
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # 
 # let mut world = World::new();
 # 
@@ -205,7 +205,7 @@ Previously, we've seen how to send events using the [`World::send`] method.
 But to send events from _within_ a handler, we'll need to use the [`Sender`] handler parameter:
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 #[derive(GlobalEvent)]
 struct A;
@@ -241,7 +241,7 @@ Note that [`Sender::send`] does not immediately send events, but rather adds the
 The next event in the queue begins broadcasting once all handlers for the current event have finished.
 
 ```rust
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 #[derive(GlobalEvent)]
 struct A;
@@ -295,10 +295,10 @@ Entities and components are the bread and butter of any ECS framework.
 Entities make up the _things_ in your application, such as monsters, players, cameras, GUI elements, or items.
 By itself, an entity is just a unique identifier ([`EntityId`]). It is the entity's set of _components_ that differentiate a player from a monster, or a camera from an item. Components hold the data while handlers operate on entities with certain sets of components.
 
-Let's see how we might model player and monster entities in a game with `evenio`.
+Let's see how we might model player and monster entities in a game with `nuvenio`.
 
 ```rust
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 #[derive(Component)]
 struct Health(i32);
@@ -352,7 +352,7 @@ If our game has lots of monsters with lots of components, we might grow tired of
 To fix this, we can create a new event and handler to do the inserting for us.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # #[derive(Component)]
 # struct Health(i32);
@@ -406,7 +406,7 @@ The `EntityId` will never be reused by a new entity.
 Alternatively, if we just want to remove components without deleting the entire entity, we send the [`Remove`] event for the specific component(s).
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # 
 #[derive(Component)]
@@ -450,7 +450,7 @@ This is where the [`Fetcher`] handler parameter comes in.
 `Fetcher<Q>` allows for both random access entity lookups using an `EntityId` and iteration over all entities matching some [`Query`] `Q`.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 #[derive(GlobalEvent)]
 struct E;
@@ -525,7 +525,7 @@ Compared to tuples, however, derived query structs offer some advantages.
 Fields are named and methods can be implemented on the struct – handy for complex or frequently used queries.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # #[derive(GlobalEvent)] struct E;
 # #[derive(Component, Debug)] struct A;
 # #[derive(Component, Debug)] struct B;
@@ -558,7 +558,7 @@ Within a query or set of queries, it is possible to create component accesses th
 Consider:
 
 ```should_panic
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # #[derive(GlobalEvent)] struct E;
 # #[derive(Component)] struct A;
 # let mut world = World::new();
@@ -572,7 +572,7 @@ Because both fetchers are capable of accessing the same entity, it is possible t
 There are a number of ways to resolve this situation, but let's look at one way using `With` and `Not`:
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # #[derive(GlobalEvent)] struct E;
 # #[derive(Component)] struct A;
 # #[derive(Component)] struct B;
@@ -588,7 +588,7 @@ Therefore, there is no possibility of overlapping access to `A`, and the handler
 
 Through the course of development, we may find ourselves wanting to store global data in a location that is easily accessed by handlers.
 
-To facilitate this, `evenio` has the [`Single`] handler parameter.
+To facilitate this, `nuvenio` has the [`Single`] handler parameter.
 `Single` is parameterized by a query that must match a single entity in the world.
 If the query does not match exactly one entity, then a runtime panic occurs.
 
@@ -598,7 +598,7 @@ To create our global variable, we
 3. let `Single` match against it.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # #[derive(GlobalEvent)] struct E;
 #[derive(Component)]
@@ -623,7 +623,7 @@ For global data scoped to a single handler, see [`Local`].
 
 # Targeted Events
 
-Events in `evenio` come in two flavors: _global_ and _targeted_.
+Events in `nuvenio` come in two flavors: _global_ and _targeted_.
 - Global events will simply be received by all handlers listening for the event. Use `.send(...)` to send a global event.
 - Targeted events are directed at a particular entity. Use `.send_to(...)` to choose the entity to send the event to. Only handlers whose filter matches the target entity will receive the event.
 
@@ -632,7 +632,7 @@ The advantage of targeted events is efficiency. Only the handlers whose chosen q
 To create a targeted event, use the [`TargetedEvent`] derive macro.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 #[derive(TargetedEvent)]
 struct MyTargetedEvent {
     data: i32,
@@ -644,7 +644,7 @@ If the target matches the query, the query data is accessible in the `query` fie
 Otherwise, the handler is not run.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 #[derive(TargetedEvent)]
 # struct MyTargetedEvent {
 #     data: i32,
@@ -687,7 +687,7 @@ UUIDs are usually not meant to change during the lifetime of the entity, so let'
 To start, we'll mark the component as immutable.
 
 ```rust
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 /// A universally unique identifier for an entity.
 #[derive(Component)]
 #[component(immutable)]
@@ -697,7 +697,7 @@ struct Uuid(u128);
 Attempting to get a mutable reference to the UUID component will fail at compile time:
 
 ```compile_fail
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # #[derive(Component)]
 # #[component(immutable)]
@@ -714,7 +714,7 @@ The UUID could still be changed using the `Insert` event, so let's raise an erro
 Note that handlers listening for an `Insert` event will run _before_ the component is inserted on the entity.
 
 ```should_panic
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # #[derive(Component)]
 # #[component(immutable)]
@@ -733,7 +733,7 @@ fn detect_uuid_overwrite(r: Receiver<Insert<Uuid>, (EntityId, With<&Uuid>)>) {
 To make this completely airtight, we'll also need to protect against removing the component with `Remove`.
 
 ```should_panic
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 # #[derive(Component)]
 # #[component(immutable)]
@@ -758,7 +758,7 @@ Like components, events can be marked as immutable.
 Doing so will prevent users from mutating or consuming the event.
 
 ```compile_fail
-# use evenio::prelude::*;
+# use nuvenio::prelude::*;
 # let mut world = World::new();
 #[derive(GlobalEvent)]
 #[event(immutable)]

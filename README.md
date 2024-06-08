@@ -1,13 +1,13 @@
-# Evenio
+# nuvenio
 
-`evenio` is an archetype-based [Entity Component System][ECS] framework for building event-driven programs. 
+`nuvenio` is an archetype-based [Entity Component System][ECS] framework for building event-driven programs. 
 It aims to have a small but maximally expressive set of features that are easy and efficient to use.
 
 [ECS]: https://en.wikipedia.org/wiki/Entity_component_system
 
 ## Features
 
-- In addition to the usual Entities, Components, and Systems, `evenio` introduces events as a first-class citizen.
+- In addition to the usual Entities, Components, and Systems, `nuvenio` introduces events as a first-class citizen.
 Rather than restricting systems to run once every frame/update in a fixed order, systems are generalized as event handlers.
 The control flow of the entire program is then defined by the flow of events between handlers.
 - Structural changes to the world (such as entity despawning, component additions/removals, etc.) are mediated by events, allowing handlers to hook into their occurrence.
@@ -17,14 +17,14 @@ The control flow of the entire program is then defined by the flow of events bet
 - World data has no `Send` or `Sync` requirements.
 - `no_std` support.
 
-> **For a full step-by-step introduction, please read the [tutorial book 📚](https://docs.rs/evenio/latest/evenio/tutorial/).**
+> **For a full step-by-step introduction, please read the [tutorial book 📚](https://docs.rs/nuvenio/latest/nuvenio/tutorial/).**
 
 ## Example
 
-Here's how we might make a simple game loop in `evenio`:
+Here's how we might make a simple game loop in `nuvenio`:
 
 ```rust
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 // Define position and velocity components.
 #[derive(Component)]
@@ -79,7 +79,7 @@ fn update_positions(_: Receiver<Tick>, entities: Fetcher<(&mut Position, &Veloci
 
 ## Feature Flags
 - `std` (_enabled by default_): Enables support for the standard library.
-  Without this, `evenio` depends only on `core` and `alloc`.
+  Without this, `nuvenio` depends only on `core` and `alloc`.
 - `rayon`: Adds parallel iterator support for `Fetcher`. Uses the [Rayon] library.
 
 [Rayon]: https://github.com/rayon-rs/rayon

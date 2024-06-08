@@ -10,8 +10,8 @@ fn main() {
 const COUNTS: [u64; 10] = [1, 2, 3, 5, 10, 15, 20, 25, 30, 40];
 
 #[divan::bench(args = COUNTS, sample_size = 10)]
-fn spawn_many_comps_n_evenio(bencher: Bencher, count: u64) {
-    use evenio::prelude::*;
+fn spawn_many_comps_n_nuvenio(bencher: Bencher, count: u64) {
+    use nuvenio::prelude::*;
 
     macro_rules! add_components {
         ($world:ident, $e:ident, $n:ident, $($index:literal)*) => {

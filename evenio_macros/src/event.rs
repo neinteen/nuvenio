@@ -12,9 +12,9 @@ pub(crate) fn derive_event(input: TokenStream, is_targeted: bool) -> Result<Toke
     }
 
     let mutability_type: Type = if parse_attr_immutable("event", &input.attrs)? {
-        parse_quote!(::evenio::mutability::Immutable)
+        parse_quote!(::nuvenio::mutability::Immutable)
     } else {
-        parse_quote!(::evenio::mutability::Mutable)
+        parse_quote!(::nuvenio::mutability::Mutable)
     };
 
     let name = &input.ident;
@@ -28,14 +28,14 @@ pub(crate) fn derive_event(input: TokenStream, is_targeted: bool) -> Result<Toke
     }
 
     let event_idx_type: Type = if is_targeted {
-        parse_quote!(::evenio::event::TargetedEventIdx)
+        parse_quote!(::nuvenio::event::TargetedEventIdx)
     } else {
-        parse_quote!(::evenio::event::GlobalEventIdx)
+        parse_quote!(::nuvenio::event::GlobalEventIdx)
     };
 
     Ok(quote! {
         #[automatically_derived]
-        unsafe impl #impl_generics ::evenio::event::Event for #name #ty_generics #where_clause {
+        unsafe impl #impl_generics ::nuvenio::event::Event for #name #ty_generics #where_clause {
             type This<'__a> = #this;
 
             type EventIdx = #event_idx_type;

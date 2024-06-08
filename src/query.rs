@@ -7,8 +7,8 @@ use core::marker::PhantomData;
 use core::ops::{Deref, DerefMut};
 use core::ptr::NonNull;
 
-use evenio_macros::all_tuples;
-pub use evenio_macros::Query;
+use nuvenio_macros::all_tuples;
+pub use nuvenio_macros::Query;
 
 use crate::access::{Access, ComponentAccess};
 use crate::archetype::{Archetype, ArchetypeRow};
@@ -31,7 +31,7 @@ use crate::world::World;
 /// ```
 /// # #[derive(GlobalEvent)]
 /// # struct MyEvent;
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(Component, Debug)]
 /// struct A(i32);

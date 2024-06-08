@@ -30,7 +30,7 @@ impl Access {
     /// # Examples
     ///
     /// ```
-    /// use evenio::access::Access;
+    /// use nuvenio::access::Access;
     ///
     /// assert_eq!(Access::Read.join(Access::Read), Some(Access::Read));
     /// assert_eq!(Access::Read.join(Access::ReadWrite), None);
@@ -59,7 +59,7 @@ impl Access {
     /// # Examples
     ///
     /// ```
-    /// use evenio::access::Access::{None, Read, ReadWrite};
+    /// use nuvenio::access::Access::{None, Read, ReadWrite};
     ///
     /// assert!(Read.is_compatible(Read));
     /// assert!(!Read.is_compatible(ReadWrite));

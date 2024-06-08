@@ -9,23 +9,23 @@ fn main() {
 const DATA: f64 = 123456789.0;
 const LENS: [usize; 7] = [1, 10, 100, 1_000, 10_000, 100_000, 1_000_000];
 
-#[derive(evenio::component::Component, bevy_ecs::component::Component)]
+#[derive(nuvenio::component::Component, bevy_ecs::component::Component)]
 struct C1(f64);
 
-#[derive(evenio::component::Component, bevy_ecs::component::Component)]
+#[derive(nuvenio::component::Component, bevy_ecs::component::Component)]
 struct C2(#[allow(dead_code)] f64);
 
-#[derive(evenio::component::Component, bevy_ecs::component::Component)]
+#[derive(nuvenio::component::Component, bevy_ecs::component::Component)]
 struct C3(#[allow(dead_code)] f64);
 
-#[derive(evenio::event::GlobalEvent)]
+#[derive(nuvenio::event::GlobalEvent)]
 struct E;
 
 #[cfg(feature = "rayon")]
 #[divan::bench(args = LENS, consts = [false, true])]
-fn iter_simple_evenio<const PARALLEL: bool>(bencher: Bencher, len: usize) {
-    use evenio::prelude::*;
-    use evenio::rayon::prelude::*;
+fn iter_simple_nuvenio<const PARALLEL: bool>(bencher: Bencher, len: usize) {
+    use nuvenio::prelude::*;
+    use nuvenio::rayon::prelude::*;
 
     let mut world = World::new();
 
@@ -99,17 +99,17 @@ fn iter_simple_bevy<const PARALLEL: bool>(bencher: Bencher, len: usize) {
 const ITERS_PER_PIXEL: [usize; 11] = [1, 2, 3, 8, 16, 32, 64, 128, 256, 512, 1024];
 const IMAGE_SIZE: u16 = 100;
 
-#[derive(evenio::component::Component, bevy_ecs::component::Component)]
+#[derive(nuvenio::component::Component, bevy_ecs::component::Component)]
 struct Pixel(u16, u16);
 
-#[derive(evenio::component::Component, bevy_ecs::component::Component)]
+#[derive(nuvenio::component::Component, bevy_ecs::component::Component)]
 struct Output(bool);
 
 #[cfg(feature = "rayon")]
 #[divan::bench(args = ITERS_PER_PIXEL, consts = [true])]
-fn iter_mandelbrot_evenio<const PARALLEL: bool>(bencher: Bencher, iters: usize) {
-    use evenio::prelude::*;
-    use evenio::rayon::prelude::*;
+fn iter_mandelbrot_nuvenio<const PARALLEL: bool>(bencher: Bencher, iters: usize) {
+    use nuvenio::prelude::*;
+    use nuvenio::rayon::prelude::*;
 
     let mut world = World::new();
 

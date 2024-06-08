@@ -34,8 +34,8 @@ use crate::world::UnsafeWorldCell;
 /// parameter.
 ///
 /// ```
-/// # use evenio::prelude::*;
-/// # use evenio::archetype::Archetypes;
+/// # use nuvenio::prelude::*;
+/// # use nuvenio::archetype::Archetypes;
 /// #
 /// # #[derive(GlobalEvent)] struct E;
 /// #

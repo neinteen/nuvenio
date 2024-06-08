@@ -43,12 +43,12 @@ pub(crate) fn derive_query(input: TokenStream) -> Result<TokenStream> {
                 }
 
                 where_clause.predicates.push(
-                    parse_quote!(#ty: for<'__a> ::evenio::query::Query<This<'__a> = #replaced_ty>),
+                    parse_quote!(#ty: for<'__a> ::nuvenio::query::Query<This<'__a> = #replaced_ty>),
                 );
 
                 ro_where_clause
                     .predicates
-                    .push(parse_quote!(#ty: for<'__a> ::evenio::query::ReadOnlyQuery<This<'__a> = #replaced_ty>));
+                    .push(parse_quote!(#ty: for<'__a> ::nuvenio::query::ReadOnlyQuery<This<'__a> = #replaced_ty>));
             }
 
             get_body = match &struct_.fields {
@@ -65,7 +65,7 @@ pub(crate) fn derive_query(input: TokenStream) -> Result<TokenStream> {
                         .collect();
 
                     quote! {
-                        let (#(#underscored_idents,)*) = <#tuple_ty as ::evenio::query::Query>::get(state, row);
+                        let (#(#underscored_idents,)*) = <#tuple_ty as ::nuvenio::query::Query>::get(state, row);
 
                         #name {
                             #(#idents: #underscored_idents),*
@@ -80,7 +80,7 @@ pub(crate) fn derive_query(input: TokenStream) -> Result<TokenStream> {
                         .map(|(i, _)| LitInt::new(&format!("{i}"), Span::call_site()));
 
                     quote! {
-                        let __tuple = <#tuple_ty as ::evenio::query::Query>::get(state, row);
+                        let __tuple = <#tuple_ty as ::nuvenio::query::Query>::get(state, row);
 
                         #name(#(__tuple.#indices),*)
                     }
@@ -113,35 +113,35 @@ pub(crate) fn derive_query(input: TokenStream) -> Result<TokenStream> {
 
     Ok(quote! {
         #[automatically_derived]
-        unsafe impl #impl_generics ::evenio::query::Query for #name #ty_generics #where_clause {
+        unsafe impl #impl_generics ::nuvenio::query::Query for #name #ty_generics #where_clause {
             type This<'__a> = #this;
 
-            type ArchState = <#tuple_ty as ::evenio::query::Query>::ArchState;
+            type ArchState = <#tuple_ty as ::nuvenio::query::Query>::ArchState;
 
-            type State = <#tuple_ty as ::evenio::query::Query>::State;
+            type State = <#tuple_ty as ::nuvenio::query::Query>::State;
 
             fn init(
-                world: &mut ::evenio::world::World,
-                config: &mut ::evenio::handler::HandlerConfig
-            ) -> ::core::result::Result<(::evenio::access::ComponentAccess, Self::State), ::evenio::handler::InitError>
+                world: &mut ::nuvenio::world::World,
+                config: &mut ::nuvenio::handler::HandlerConfig
+            ) -> ::core::result::Result<(::nuvenio::access::ComponentAccess, Self::State), ::nuvenio::handler::InitError>
             {
-                <#tuple_ty as ::evenio::query::Query>::init(world, config)
+                <#tuple_ty as ::nuvenio::query::Query>::init(world, config)
             }
 
-            fn new_state(world: &mut ::evenio::world::World) -> Self::State {
-                <#tuple_ty as ::evenio::query::Query>::new_state(world)
+            fn new_state(world: &mut ::nuvenio::world::World) -> Self::State {
+                <#tuple_ty as ::nuvenio::query::Query>::new_state(world)
             }
 
-            fn new_arch_state(arch: &::evenio::archetype::Archetype, state: &mut Self::State) -> Option<Self::ArchState> {
-                <#tuple_ty as ::evenio::query::Query>::new_arch_state(arch, state)
+            fn new_arch_state(arch: &::nuvenio::archetype::Archetype, state: &mut Self::State) -> Option<Self::ArchState> {
+                <#tuple_ty as ::nuvenio::query::Query>::new_arch_state(arch, state)
             }
 
-            unsafe fn get<'__a>(state: &Self::ArchState, row: ::evenio::archetype::ArchetypeRow) -> Self::This<'__a> {
+            unsafe fn get<'__a>(state: &Self::ArchState, row: ::nuvenio::archetype::ArchetypeRow) -> Self::This<'__a> {
                 #get_body
             }
         }
 
         #[automatically_derived]
-        unsafe impl #ro_impl_generics ::evenio::query::ReadOnlyQuery for #name #ro_ty_generics #ro_where_clause {}
+        unsafe impl #ro_impl_generics ::nuvenio::query::ReadOnlyQuery for #name #ro_ty_generics #ro_where_clause {}
     })
 }

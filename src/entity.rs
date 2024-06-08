@@ -15,8 +15,8 @@ use crate::world::UnsafeWorldCell;
 /// parameter.
 ///
 /// ```
-/// # use evenio::prelude::*;
-/// # use evenio::entity::Entities;
+/// # use nuvenio::prelude::*;
+/// # use nuvenio::entity::Entities;
 /// #
 /// # #[derive(GlobalEvent)] struct E;
 /// #

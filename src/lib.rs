@@ -8,7 +8,7 @@
 extern crate alloc;
 
 // Lets us use our own derive macros internally.
-extern crate self as evenio;
+extern crate self as nuvenio;
 
 pub mod access;
 mod aliased_box;
@@ -41,7 +41,7 @@ pub use rayon;
 /// This is intended to be glob-imported like so:
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 /// ```
 pub mod prelude {
     pub use crate::component::{Component, ComponentId};

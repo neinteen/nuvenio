@@ -431,7 +431,7 @@ where
 ///
 /// ```
 /// # #[derive(GlobalEvent)] struct E;
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(Component, Debug)]
 /// struct MyComponent(i32);
@@ -461,7 +461,7 @@ impl<Q> Single<Q> {
     /// # Examples
     ///
     /// ```
-    /// use evenio::fetch::Single;
+    /// use nuvenio::fetch::Single;
     ///
     /// let single = Single::new("bananas");
     /// assert_eq!(Single::into_inner(single), "bananas");

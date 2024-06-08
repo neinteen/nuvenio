@@ -11,8 +11,8 @@ const TOTAL_ENTITIES: usize = 1_000_000;
 const FETCHED_COUNT: usize = 100_000;
 
 #[divan::bench]
-fn random_access_evenio(bencher: Bencher) {
-    use evenio::prelude::*;
+fn random_access_nuvenio(bencher: Bencher) {
+    use nuvenio::prelude::*;
 
     let mut entities = vec![];
     let mut world = World::new();

@@ -54,7 +54,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// let mut world = World::new();
     /// ```
@@ -84,7 +84,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(GlobalEvent)]
     /// struct MyEvent(i32);
@@ -125,7 +125,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(TargetedEvent)]
     /// struct MyEvent(i32);
@@ -164,7 +164,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// let mut world = World::new();
     /// let id = world.spawn();
@@ -184,7 +184,7 @@ impl World {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// #
     /// # let mut world = World::new();
     /// #
@@ -206,7 +206,7 @@ impl World {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// #
     /// # let mut world = World::new();
     /// #
@@ -226,7 +226,7 @@ impl World {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// #
     /// # let mut world = World::new();
     /// #
@@ -244,7 +244,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(Component, PartialEq, Debug)]
     /// struct MyComponent(i32);
@@ -285,7 +285,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(Component, PartialEq, Debug)]
     /// struct MyComponent(i32);
@@ -431,7 +431,7 @@ impl World {
     /// when, for instance, the handler does not specify an event to receive.
     ///
     /// ```should_panic
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// #
     /// # let mut world = World::new();
     /// #
@@ -441,7 +441,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     /// # #[derive(GlobalEvent)]
     /// # struct MyEvent;
     ///
@@ -469,7 +469,7 @@ impl World {
     /// # Example
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// let mut world = World::new();
     ///
@@ -505,7 +505,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(Component)]
     /// struct MyComponent;
@@ -570,7 +570,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// # let mut world = World::new();
     /// # #[derive(Component)] struct C;
     /// # #[derive(GlobalEvent)] struct E;
@@ -665,7 +665,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(GlobalEvent)]
     /// struct MyEvent;
@@ -690,7 +690,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(TargetedEvent)]
     /// struct MyEvent;
@@ -798,7 +798,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(GlobalEvent)]
     /// struct MyEvent;
@@ -850,7 +850,7 @@ impl World {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// #[derive(TargetedEvent)]
     /// struct MyEvent;

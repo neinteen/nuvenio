@@ -12,8 +12,8 @@ use core::ops::{Deref, DerefMut, Index};
 use core::ptr::NonNull;
 use core::{any, fmt};
 
-use evenio_macros::all_tuples;
-pub use evenio_macros::HandlerParam;
+use nuvenio_macros::all_tuples;
+pub use nuvenio_macros::HandlerParam;
 
 use crate::access::{Access, ComponentAccess};
 use crate::aliased_box::AliasedBox;
@@ -33,8 +33,8 @@ use crate::world::{UnsafeWorldCell, World};
 /// parameter.
 ///
 /// ```
-/// # use evenio::prelude::*;
-/// # use evenio::handler::Handlers;
+/// # use nuvenio::prelude::*;
+/// # use nuvenio::handler::Handlers;
 /// #
 /// # #[derive(GlobalEvent)] struct E;
 /// #
@@ -576,7 +576,7 @@ pub trait IntoHandler<Marker>: Sized {
     /// # Examples
     ///
     /// ```
-    /// use evenio::prelude::*;
+    /// use nuvenio::prelude::*;
     ///
     /// let mut world = World::new();
     ///
@@ -989,7 +989,7 @@ impl Default for MaybeInvalidAccess {
 /// ```
 /// use std::marker::PhantomData;
 ///
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(Component)]
 /// struct C;
@@ -1253,8 +1253,8 @@ all_tuples!(impl_handler_param_function, 0, 15, P, p);
 /// # Examples
 ///
 /// ```
-/// use evenio::handler::Local;
-/// use evenio::prelude::*;
+/// use nuvenio::handler::Local;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(GlobalEvent)]
 /// struct E;
@@ -1435,7 +1435,7 @@ pub struct RemoveHandler(pub HandlerId);
 
 #[cfg(test)]
 mod tests {
-    use evenio::prelude::*;
+    use nuvenio::prelude::*;
 
     use super::*;
     use crate::event::GlobalEvents;

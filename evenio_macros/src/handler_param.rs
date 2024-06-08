@@ -39,7 +39,7 @@ pub(crate) fn derive_handler_param(input: TokenStream) -> Result<TokenStream> {
                 }
 
                 where_clause.predicates.push(
-                    parse_quote!(#ty: for<'__a> ::evenio::handler::HandlerParam<This<'__a> = #replaced_ty>),
+                    parse_quote!(#ty: for<'__a> ::nuvenio::handler::HandlerParam<This<'__a> = #replaced_ty>),
                 );
             }
 
@@ -57,7 +57,7 @@ pub(crate) fn derive_handler_param(input: TokenStream) -> Result<TokenStream> {
                         .collect();
 
                     quote! {
-                        let (#(#underscored_idents,)*) = <#tuple_ty as ::evenio::handler::HandlerParam>::get(
+                        let (#(#underscored_idents,)*) = <#tuple_ty as ::nuvenio::handler::HandlerParam>::get(
                             state,
                             info,
                             event_ptr,
@@ -78,7 +78,7 @@ pub(crate) fn derive_handler_param(input: TokenStream) -> Result<TokenStream> {
                         .map(|(i, _)| LitInt::new(&format!("{i}"), Span::call_site()));
 
                     quote! {
-                        let __tuple = <#tuple_ty as ::evenio::handler::HandlerParam>::get(
+                        let __tuple = <#tuple_ty as ::nuvenio::handler::HandlerParam>::get(
                             state,
                             info,
                             event_ptr,
@@ -115,34 +115,34 @@ pub(crate) fn derive_handler_param(input: TokenStream) -> Result<TokenStream> {
 
     Ok(quote! {
         #[automatically_derived]
-        unsafe impl #impl_generics ::evenio::handler::HandlerParam for #name #ty_generics #where_clause {
-            type State = <#tuple_ty as ::evenio::handler::HandlerParam>::State;
+        unsafe impl #impl_generics ::nuvenio::handler::HandlerParam for #name #ty_generics #where_clause {
+            type State = <#tuple_ty as ::nuvenio::handler::HandlerParam>::State;
 
             type This<'__a> = #this;
 
             fn init(
-                world: &mut ::evenio::world::World,
-                config: &mut ::evenio::handler::HandlerConfig,
-            ) -> ::core::result::Result<Self::State, ::evenio::handler::InitError>
+                world: &mut ::nuvenio::world::World,
+                config: &mut ::nuvenio::handler::HandlerConfig,
+            ) -> ::core::result::Result<Self::State, ::nuvenio::handler::InitError>
             {
-                <#tuple_ty as ::evenio::handler::HandlerParam>::init(world, config)
+                <#tuple_ty as ::nuvenio::handler::HandlerParam>::init(world, config)
             }
 
             unsafe fn get<'__a>(
                 state: &'__a mut Self::State,
-                info: &'__a ::evenio::handler::HandlerInfo,
-                event_ptr: ::evenio::event::EventPtr<'__a>,
-                target_location: ::evenio::entity::EntityLocation,
-                world: ::evenio::world::UnsafeWorldCell<'__a>,
+                info: &'__a ::nuvenio::handler::HandlerInfo,
+                event_ptr: ::nuvenio::event::EventPtr<'__a>,
+                target_location: ::nuvenio::entity::EntityLocation,
+                world: ::nuvenio::world::UnsafeWorldCell<'__a>,
             ) -> Self::This<'__a> {
                 #get_body
             }
 
             fn refresh_archetype(
                 state: &mut Self::State,
-                arch: &::evenio::archetype::Archetype
+                arch: &::nuvenio::archetype::Archetype
             ) {
-                <#tuple_ty as ::evenio::handler::HandlerParam>::refresh_archetype(
+                <#tuple_ty as ::nuvenio::handler::HandlerParam>::refresh_archetype(
                     state,
                     arch
                 )
@@ -150,9 +150,9 @@ pub(crate) fn derive_handler_param(input: TokenStream) -> Result<TokenStream> {
 
             fn remove_archetype(
                 state: &mut Self::State,
-                arch: &::evenio::archetype::Archetype
+                arch: &::nuvenio::archetype::Archetype
             ) {
-                <#tuple_ty as ::evenio::handler::HandlerParam>::remove_archetype(
+                <#tuple_ty as ::nuvenio::handler::HandlerParam>::remove_archetype(
                     state,
                     arch
                 )

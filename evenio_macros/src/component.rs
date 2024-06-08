@@ -14,9 +14,9 @@ pub(crate) fn derive_component(input: TokenStream) -> Result<TokenStream> {
         .push(parse_quote!(Self: 'static));
 
     let mutability_type: Type = if parse_attr_immutable("component", &input.attrs)? {
-        parse_quote!(::evenio::mutability::Immutable)
+        parse_quote!(::nuvenio::mutability::Immutable)
     } else {
-        parse_quote!(::evenio::mutability::Mutable)
+        parse_quote!(::nuvenio::mutability::Mutable)
     };
 
     let name = &input.ident;
@@ -24,7 +24,7 @@ pub(crate) fn derive_component(input: TokenStream) -> Result<TokenStream> {
 
     Ok(quote! {
         #[automatically_derived]
-        impl #impl_generics ::evenio::component::Component for #name #ty_generics #where_clause {
+        impl #impl_generics ::nuvenio::component::Component for #name #ty_generics #where_clause {
             type Mutability = #mutability_type;
         }
     })

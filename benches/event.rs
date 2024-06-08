@@ -1,7 +1,7 @@
-//! Measures performance of sending evenio events.
+//! Measures performance of sending nuvenio events.
 
 use divan::{black_box, Bencher};
-use evenio::prelude::*;
+use nuvenio::prelude::*;
 
 fn main() {
     divan::main()

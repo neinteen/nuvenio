@@ -7,7 +7,7 @@ use core::any::TypeId;
 use core::ops::Index;
 
 use ahash::RandomState;
-pub use evenio_macros::Component;
+pub use nuvenio_macros::Component;
 
 use crate::archetype::{Archetype, ArchetypeIdx};
 use crate::drop::DropFn;
@@ -27,8 +27,8 @@ use crate::world::UnsafeWorldCell;
 /// parameter.
 ///
 /// ```
-/// # use evenio::prelude::*;
-/// # use evenio::component::Components;
+/// # use nuvenio::prelude::*;
+/// # use nuvenio::component::Components;
 /// #
 /// # #[derive(GlobalEvent)] struct E;
 /// #
@@ -279,7 +279,7 @@ impl ComponentInfo {
 /// bound to do so.
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// // Component with some data.
 /// #[derive(Component)]

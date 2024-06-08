@@ -11,7 +11,7 @@ use core::ops::{Deref, DerefMut};
 use core::ptr::{self, NonNull};
 use core::{any, fmt, slice, str};
 
-use evenio_macros::all_tuples;
+use nuvenio_macros::all_tuples;
 pub use global::*;
 pub use targeted::*;
 
@@ -279,7 +279,7 @@ impl<'a, E: Event> EventMut<'a, E> {
     /// # Examples
     ///
     /// ```rust
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// # let mut world = World::new();
     /// # #[derive(GlobalEvent)]
     /// # struct E;
@@ -349,7 +349,7 @@ where
 /// # Examples
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(GlobalEvent)]
 /// struct E;
@@ -709,7 +709,7 @@ impl<'a, ES: EventSet> Sender<'a, ES> {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// # #[derive(Component)] struct C;
     /// # fn _f(sender: &mut Sender<Insert<C>>, target: EntityId, component: C) {
     /// sender.send_to(target, Insert(component));
@@ -729,7 +729,7 @@ impl<'a, ES: EventSet> Sender<'a, ES> {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// # #[derive(Component)] struct C;
     /// # fn _f(sender: &mut Sender<Remove<C>>, target: EntityId) {
     /// sender.send_to(target, Remove::<C>);
@@ -749,7 +749,7 @@ impl<'a, ES: EventSet> Sender<'a, ES> {
     /// This is equivalent to:
     ///
     /// ```
-    /// # use evenio::prelude::*;
+    /// # use nuvenio::prelude::*;
     /// # fn _f(sender: &mut Sender<Despawn>, target: EntityId) {
     /// sender.send_to(target, Despawn);
     /// # }
@@ -1012,7 +1012,7 @@ impl<C> DerefMut for Insert<C> {
 /// # Examples
 ///
 /// ```
-/// # use evenio::prelude::*;
+/// # use nuvenio::prelude::*;
 /// #
 /// # #[derive(Component)]
 /// # struct C;
@@ -1098,7 +1098,7 @@ unsafe impl Event for Spawn {
 /// # Examples
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// let mut world = World::new();
 ///

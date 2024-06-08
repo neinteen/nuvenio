@@ -3,7 +3,7 @@ use core::alloc::Layout;
 use core::any::TypeId;
 use core::ops::Index;
 
-pub use evenio_macros::TargetedEvent;
+pub use nuvenio_macros::TargetedEvent;
 
 use super::global::GlobalEvent;
 use super::{Event, EventDescriptor, EventKind, EventPtr, Mutability};
@@ -27,7 +27,7 @@ use crate::world::{UnsafeWorldCell, World};
 /// # Deriving
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// #[derive(TargetedEvent)]
 /// struct MyEvent {
@@ -39,7 +39,7 @@ use crate::world::{UnsafeWorldCell, World};
 /// have a `T: 'static` bound in the generated impl.
 ///
 /// ```
-/// use evenio::prelude::*;
+/// use nuvenio::prelude::*;
 ///
 /// // `T: 'static` is required for this to impl `Event`.
 /// #[derive(TargetedEvent)]
@@ -54,8 +54,8 @@ impl<E: Event<EventIdx = TargetedEventIdx>> TargetedEvent for E {}
 /// parameter.
 ///
 /// ```
-/// # use evenio::prelude::*;
-/// # use evenio::event::TargetedEvents;
+/// # use nuvenio::prelude::*;
+/// # use nuvenio::event::TargetedEvents;
 /// #
 /// # #[derive(GlobalEvent)] struct E;
 /// #

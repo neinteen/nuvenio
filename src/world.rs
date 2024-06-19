@@ -30,6 +30,7 @@ use crate::handler::{
     Handlers, IntoHandler, MaybeInvalidAccess, ReceivedEventId, RemoveHandler,
 };
 use crate::mutability::{Mutability, Mutable};
+use crate::resource::{Resource, Resources};
 
 /// A container for all data in the ECS. This includes entities, components,
 /// handlers, and events.
@@ -40,6 +41,7 @@ pub struct World {
     components: Components,
     handlers: Handlers,
     archetypes: Archetypes,
+    resources: Resources,
     global_events: GlobalEvents,
     targeted_events: TargetedEvents,
     event_queue: Vec<EventQueueItem>,
@@ -65,6 +67,7 @@ impl World {
             components: Components::new(),
             handlers: Handlers::new(),
             archetypes: Archetypes::new(),
+            resources: Resources::new(),
             global_events: GlobalEvents::new(),
             targeted_events: TargetedEvents::new(),
             event_queue: vec![],
@@ -314,6 +317,34 @@ impl World {
         let col = arch.column_of(component_idx)?;
 
         Some(unsafe { &mut *col.data().as_ptr().cast::<C>().add(loc.row.0 as usize) })
+    }
+
+    /// Adds a [`Resource`] to the world.
+    ///
+    /// Returns the previous resource if it existed.
+    pub fn add_resource<R: Resource>(&mut self, resource: R) -> Option<R> {
+        self.resources.add(resource)
+    }
+
+    /// Returns a reference to the [`Resource`] if it exists.
+    ///
+    /// Returns `None` if the resource doesn't exist.
+    pub fn get_resource<R: Resource>(&self) -> Option<&R> {
+        self.resources.get()
+    }
+
+    /// Returns a mutable reference to the [`Resource`] if it exists.
+    ///
+    /// Returns `None` if the resource doesn't exist.
+    pub fn get_resource_mut<R: Resource>(&mut self) -> Option<&mut R> {
+        self.resources.get_mut()
+    }
+
+    /// Removes a [`Resource`] from the world.
+    ///
+    /// Returns the removed resource if it existed.
+    pub fn remove_resource<R: Resource>(&mut self) -> Option<R> {
+        self.resources.remove()
     }
 
     pub(crate) fn try_add_handler<H: IntoHandler<M>, M>(
@@ -1298,6 +1329,10 @@ impl<'a> UnsafeWorldCell<'a> {
     /// Returns the [`Archetypes`] for this world.
     pub fn archetypes(self) -> &'a Archetypes {
         unsafe { &(*self.world.as_ptr()).archetypes }
+    }
+
+    pub fn resources(self) -> &'a Resources {
+        unsafe { &(*self.world.as_ptr()).resources }
     }
 
     /// Returns the [`GlobalEvents`] for this world.

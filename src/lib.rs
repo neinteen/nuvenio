@@ -26,6 +26,7 @@ mod layout_util;
 mod map;
 pub mod mutability;
 pub mod query;
+pub mod resource;
 mod slot_map;
 mod sparse;
 mod sparse_map;
@@ -53,6 +54,7 @@ pub mod prelude {
     pub use crate::fetch::{Fetcher, GetError, Single, SingleError, TrySingle};
     pub use crate::handler::{Handler, HandlerId, HandlerParam, IntoHandler};
     pub use crate::query::{Has, Not, Or, Query, ReadOnlyQuery, With, Xor};
+    pub use crate::resource::{Res, ResMut, Resource, Resources};
     pub use crate::world::World;
 }
 

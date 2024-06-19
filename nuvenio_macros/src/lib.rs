@@ -7,6 +7,7 @@ mod component;
 mod event;
 mod handler_param;
 mod query;
+mod resource;
 mod util;
 
 /// Helper macro which repeatedly invokes a given macro with an increasing list
@@ -65,6 +66,14 @@ pub fn derive_targeted_event(input: TokenStream) -> TokenStream {
 #[proc_macro_derive(Component, attributes(component))]
 pub fn derive_component(input: TokenStream) -> TokenStream {
     component::derive_component(input.into())
+        .unwrap_or_else(|e| e.into_compile_error())
+        .into()
+}
+
+/// Derive macro for `Resource`. See `Resource`'s documentation for more information.
+#[proc_macro_derive(Resource)]
+pub fn derive_resource(input: TokenStream) -> TokenStream {
+    resource::derive_resource(input.into())
         .unwrap_or_else(|e| e.into_compile_error())
         .into()
 }

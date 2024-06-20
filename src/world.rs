@@ -1331,6 +1331,7 @@ impl<'a> UnsafeWorldCell<'a> {
         unsafe { &(*self.world.as_ptr()).archetypes }
     }
 
+    /// Returns the [`Resources`] for this world.
     pub fn resources(self) -> &'a Resources {
         unsafe { &(*self.world.as_ptr()).resources }
     }

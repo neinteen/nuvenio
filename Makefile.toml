@@ -1,0 +1,37 @@
+[config]
+default_to_workspace = false
+skip_core_tasks = true
+
+[tasks.clippy]
+command = "cargo"
+args = [
+    "clippy",
+    "--workspace",
+    "--no-deps",
+    "--all-features",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings",
+]
+
+[tasks.clippy_fix]
+command = "cargo"
+args = [
+    "clippy",
+    "--fix",
+    "--allow-dirty",
+    "--allow-staged",
+    "--workspace",
+    "--no-deps",
+    "--all-features",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings",
+]
+
+[tasks.build]
+dependencies = ["clippy"]
+command = "cargo"
+args = ["build"]

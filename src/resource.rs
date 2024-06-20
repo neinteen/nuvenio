@@ -1,3 +1,8 @@
+//! The resource module contains all the functionality related to resources.
+//!
+//! Resources are a way to share data between systems,
+//! and are used in combination with [`Handler`]s.
+
 use core::ptr::NonNull;
 
 use crate::{map::TypeIdMap, prelude::HandlerParam};
@@ -45,7 +50,7 @@ unsafe impl<T: Resource> HandlerParam for Res<'_, T> {
     }
 
     unsafe fn get<'a>(
-        _: &'a mut Self::State,
+        (): &'a mut Self::State,
         _: &'a crate::handler::HandlerInfo,
         _: crate::event::EventPtr<'a>,
         _: crate::entity::EntityLocation,
@@ -54,9 +59,9 @@ unsafe impl<T: Resource> HandlerParam for Res<'_, T> {
         Res(world.world_mut().get_resource())
     }
 
-    fn refresh_archetype(state: &mut Self::State, arch: &crate::archetype::Archetype) {}
+    fn refresh_archetype((): &mut Self::State, _: &crate::archetype::Archetype) {}
 
-    fn remove_archetype(state: &mut Self::State, arch: &crate::archetype::Archetype) {}
+    fn remove_archetype((): &mut Self::State, _: &crate::archetype::Archetype) {}
 }
 
 /// A mutable wrapper around a [`Resource`].
@@ -67,6 +72,7 @@ unsafe impl<T: Resource> HandlerParam for Res<'_, T> {
 pub struct ResMut<'a, R: Resource>(pub(crate) Option<&'a mut R>);
 
 impl<'a, R: Resource> ResMut<'a, R> {
+    #[allow(dead_code)]
     pub(crate) fn new(r: &'a mut R) -> Self {
         Self::from(r)
     }
@@ -99,7 +105,7 @@ unsafe impl<T: Resource> HandlerParam for ResMut<'_, T> {
     }
 
     unsafe fn get<'a>(
-        _: &'a mut Self::State,
+        (): &'a mut Self::State,
         _: &'a crate::handler::HandlerInfo,
         _: crate::event::EventPtr<'a>,
         _: crate::entity::EntityLocation,
@@ -108,9 +114,9 @@ unsafe impl<T: Resource> HandlerParam for ResMut<'_, T> {
         ResMut(world.world_mut().get_resource_mut())
     }
 
-    fn refresh_archetype(state: &mut Self::State, arch: &crate::archetype::Archetype) {}
+    fn refresh_archetype(_state: &mut Self::State, _arch: &crate::archetype::Archetype) {}
 
-    fn remove_archetype(state: &mut Self::State, arch: &crate::archetype::Archetype) {}
+    fn remove_archetype(_state: &mut Self::State, _arch: &crate::archetype::Archetype) {}
 }
 
 /// A marker trait for [`Resource`]s.
@@ -124,7 +130,7 @@ pub trait Resource: 'static {}
 ///
 /// By adding `&Resources` or `&mut Resources` to your handler, you can access all [`Resource`]s in the world.
 ///
-/// To access a resource directly, you can use the Res<T> or ResMut<T> wrapper.
+/// To access a resource directly, you can use the Res<T> or `ResMut`<T> wrapper.
 #[derive(Debug)]
 pub struct Resources {
     by_id: TypeIdMap<NonNull<dyn Resource>>,
@@ -156,7 +162,7 @@ impl Resources {
         self.by_id
             .insert(
                 core::any::TypeId::of::<R>(),
-                NonNull::new(Box::into_raw(Box::new(res)) as _).unwrap(),
+                NonNull::new(Box::into_raw(Box::new(res)) as *mut dyn Resource).unwrap(),
             )
             // SAFETY: pointer is not null, valid, guaranteed to be a Resource, and there can only be one of each type.
             .map(|r| *unsafe { Box::from_raw(r.as_ptr() as *mut R) })
@@ -256,7 +262,7 @@ unsafe impl HandlerParam for &'_ Resources {
     }
 
     unsafe fn get<'a>(
-        _: &'a mut Self::State,
+        (): &'a mut Self::State,
         _: &'a crate::handler::HandlerInfo,
         _: crate::event::EventPtr<'a>,
         _: crate::entity::EntityLocation,
@@ -265,9 +271,9 @@ unsafe impl HandlerParam for &'_ Resources {
         world.resources()
     }
 
-    fn refresh_archetype(_: &mut Self::State, _: &crate::archetype::Archetype) {}
+    fn refresh_archetype((): &mut Self::State, _: &crate::archetype::Archetype) {}
 
-    fn remove_archetype(_: &mut Self::State, _: &crate::archetype::Archetype) {}
+    fn remove_archetype((): &mut Self::State, _: &crate::archetype::Archetype) {}
 }
 
 #[cfg(test)]

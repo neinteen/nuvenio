@@ -11,8 +11,8 @@ use core::ops::{Deref, DerefMut};
 use core::ptr::{self, NonNull};
 use core::{any, fmt, slice, str};
 
-use nuvenio_macros::all_tuples;
 pub use global::*;
+use nuvenio_macros::all_tuples;
 pub use targeted::*;
 
 use crate::access::Access;

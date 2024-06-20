@@ -1,6 +1,12 @@
 # nuvenio
 
-`nuvenio` is an archetype-based [Entity Component System][ECS] framework for building event-driven programs. 
+[![Build status](https://github.com/neinteen/nuvenio/workflows/build/badge.svg)](https://github.com/neinteen/nuvenio/workflows/build/badge.svg)
+[![Tests status](https://github.com/neinteen/nuvenio/workflows/tests/badge.svg)](https://github.com/neinteen/nuvenio/workflows/tests/badge.svg)
+[![Format status](https://github.com/neinteen/nuvenio/workflows/fmt/badge.svg)](https://github.com/neinteen/nuvenio/workflows/fmt/badge.svg)
+[![Clippy status](https://github.com/neinteen/nuvenio/workflows/clippy/badge.svg)](https://github.com/neinteen/nuvenio/workflows/clippy/badge.svg)
+[![Docs status](https://github.com/neinteen/nuvenio/workflows/docs/badge.svg)](https://github.com/neinteen/nuvenio/workflows/docs/badge.svg)
+
+`nuvenio` is an archetype-based [Entity Component System][ECS] framework for building event-driven programs.
 It aims to have a small but maximally expressive set of features that are easy and efficient to use.
 
 [ECS]: https://en.wikipedia.org/wiki/Entity_component_system
@@ -8,8 +14,8 @@ It aims to have a small but maximally expressive set of features that are easy a
 ## Features
 
 - In addition to the usual Entities, Components, and Systems, `nuvenio` introduces events as a first-class citizen.
-Rather than restricting systems to run once every frame/update in a fixed order, systems are generalized as event handlers.
-The control flow of the entire program is then defined by the flow of events between handlers.
+  Rather than restricting systems to run once every frame/update in a fixed order, systems are generalized as event handlers.
+  The control flow of the entire program is then defined by the flow of events between handlers.
 - Structural changes to the world (such as entity despawning, component additions/removals, etc.) are mediated by events, allowing handlers to hook into their occurrence.
 - Targeted events enable handlers to efficiently filter events based on queries.
 - Component types, event types, and handlers are identified with generational indices, allowing them to be added and removed dynamically.
@@ -78,6 +84,7 @@ fn update_positions(_: Receiver<Tick>, entities: Fetcher<(&mut Position, &Veloci
 ```
 
 ## Feature Flags
+
 - `std` (_enabled by default_): Enables support for the standard library.
   Without this, `nuvenio` depends only on `core` and `alloc`.
 - `rayon`: Adds parallel iterator support for `Fetcher`. Uses the [Rayon] library.
